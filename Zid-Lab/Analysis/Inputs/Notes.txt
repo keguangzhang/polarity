@@ -1,0 +1,11 @@
+1. Cut out adapter sequence using cutadapt. Inputs from: Inputs/inputfastq/ Output save in: Inputs/aftercutadapt/ 
+For cutadapt manual: https://cutadapt.readthedocs.io/en/stable/guide.html
+
+2. Align reads to rDNA (ribosomal DNA) using bowtie; these aligned reads will be discarded. The reads that do not align will be kept. Input from: Inputs/aftercutadapt/ and Indexes/rDNA Output save in: Inputs/afterbowtie1/ and Inputs/uselessXXX.fastq(this can be deleted after this step)
+For bowtie manual: https://bowtie-bio.sourceforge.net/manual.shtml
+
+3. Align reads to genome using bowtie. Input from: afterbowtie1/ and Indexes/rDNA  Output save in: Inputs/afterbowtie2/
+
+4. Run FeatureCounts.py to match reads to genes in each chromosome. Input from: Inputs/afterbowtie2/ and Inputs/Chrom/  Output save in: Inputs/afterfeaturecounts  The output file should have 8 fields: Name,Orient,Start,End,Position,Length,RelativePosition,Counts
+
+5. Run Polarity.py to calculate the polarity score of each gene.  Input from: Inputs/afterfeaturecounts Output save in: Inputs/afterpolarity/*polarity&gene.csv  The output file should have 4 fields: Name,Length,Counts,PolarityPerGene
